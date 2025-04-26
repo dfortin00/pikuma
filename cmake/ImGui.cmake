@@ -1,5 +1,5 @@
 
-message("-- Downloading ImGui...")
+message("-- Downloading ImGui repository...")
 
 # Fetch ImGui
 FetchContent_Declare(
