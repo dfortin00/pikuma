@@ -14,6 +14,7 @@
 #include <SDL3/SDL_main.h>
 #include <SDL3_image/SDL_image.h>
 #include <SDL3_ttf/SDL_ttf.h>
+#include <SDL3_mixer/SDL_mixer.h>
 #include <glm/glm.hpp>
 #include <sol/sol.hpp>
 #include <imgui.h>
@@ -23,13 +24,30 @@
 static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
 
+static Mix_Music *music = NULL;
+
 /* This function runs once at startup. */
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
 {
+    // Test linking for SDL3_image
+    IMG_Load("test.png");
+
+    // Test linking for SDL3_ttf
+    TTF_Init();
+
+    // Test linking for SDL3_mixer
+    Mix_PlayingMusic();
+
+    // Test linking for GLM
+    glm::vec2 velocity = glm::vec2(2.0, -1.0);
+
+    // Test linking for SOL3 and Lua
     sol::state lua;
     lua.open_libraries(sol::lib::base);
 
-    glm::vec2 velocity = glm::vec2(2.0, -1.0);
+    // Test linking for imgui
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
 
     /* Create the window */
     if (!SDL_CreateWindowAndRenderer("Hello World", 800, 600, 0, &window, &renderer)) {
