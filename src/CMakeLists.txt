@@ -1,4 +1,4 @@
-add_executable(pikuma WIN32 main.cpp)
+add_executable(pikuma main.cpp)
 
 target_include_directories(pikuma PRIVATE ${SDL3_SOURCE_DIR}/include)
 
@@ -17,6 +17,9 @@ if (WIN32 AND SDL3_SHARED STREQUAL "SHARED_LIBRARY")
         TARGET pikuma POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
         $<TARGET_FILE:SDL3::SDL3-shared>
+        $<TARGET_FILE:SDL3_image::SDL3_image-shared>
+        $<TARGET_FILE:SDL3_ttf::SDL3_ttf-shared>
+        $<TARGET_FILE:SDL3_mixer::SDL3_mixer-shared>
         $<TARGET_FILE_DIR:pikuma>
     )
 endif()
