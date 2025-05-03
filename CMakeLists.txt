@@ -10,6 +10,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # User option: Should we rebuild external libraries?
 option(BUILD_EXTERNAL_LIBS "Force rebuilding external libraries" OFF)
 
+include(FindDependancies)
+
 include(FetchContent)
 
 include(SimpleDirectLayer3)
