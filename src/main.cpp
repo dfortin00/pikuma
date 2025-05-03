@@ -12,47 +12,29 @@
 #define SDL_MAIN_USE_CALLBACKS 1  /* use the callbacks instead of main() */
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
-#include <SDL3_image/SDL_image.h>
-#include <SDL3_ttf/SDL_ttf.h>
-#include <SDL3_mixer/SDL_mixer.h>
-#include <glm/glm.hpp>
-#include <sol/sol.hpp>
-#include <imgui.h>
 
 #include <iostream>
+#include <memory>
 
-static SDL_Window *window = NULL;
-static SDL_Renderer *renderer = NULL;
-
-static Mix_Music *music = NULL;
+#include "appstate.h"
 
 /* This function runs once at startup. */
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
 {
-    // Test linking for SDL3_image
-    IMG_Load("test.png");
+    AppState *state = new AppState();
+    *appstate = state;
 
-    // Test linking for SDL3_ttf
-    TTF_Init();
+    SDL_AppResult ret = state->GetGame()->Initialize();
+    if (ret != SDL_APP_CONTINUE) {
+        SDL_Log("Failed to initialize game");
+        return ret;
+    }
 
-    // Test linking for SDL3_mixer
-    Mix_PlayingMusic();
-
-    // Test linking for GLM
-    glm::vec2 velocity = glm::vec2(2.0, -1.0);
-
-    // Test linking for SOL3 and Lua
-    sol::state lua;
-    lua.open_libraries(sol::lib::base);
-
-    // Test linking for imgui
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-
-    /* Create the window */
-    if (!SDL_CreateWindowAndRenderer("Hello World", 800, 600, 0, &window, &renderer)) {
-        SDL_Log("Couldn't create window and renderer: %s", SDL_GetError());
-        return SDL_APP_FAILURE;
+    ret = state->CreateWindowAndRenderer(800, 600);
+    if (ret != SDL_APP_CONTINUE)
+    {
+        SDL_Log("Failed to create window and renderer");
+        return ret;
     }
 
     return SDL_APP_CONTINUE;
@@ -61,6 +43,11 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
 /* This function runs once per frame, and is the heart of the program. */
 SDL_AppResult SDL_AppIterate(void *appstate)
 {
+    AppState *state = static_cast<AppState *>(appstate);
+
+    SDL_Window *window = state->GetWindow();
+    SDL_Renderer *renderer = state->GetRenderer();
+
     const char *message = "It begins!";
     int w = 0, h = 0;
     float x, y;
@@ -85,6 +72,8 @@ SDL_AppResult SDL_AppIterate(void *appstate)
 /* This function runs when a new event (mouse input, keypresses, etc) occurs. */
 SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event)
 {
+    AppState *state = static_cast<AppState *>(appstate);
+
     if (event->type == SDL_EVENT_KEY_DOWN ||
         event->type == SDL_EVENT_QUIT) {
         return SDL_APP_SUCCESS;  /* end the program, reporting success to the OS. */
@@ -95,5 +84,6 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event)
 /* This function runs once at shutdown. */
 void SDL_AppQuit(void *appstate, SDL_AppResult result)
 {
-
+    AppState *state = static_cast<AppState *>(appstate);
+    delete state;
 }

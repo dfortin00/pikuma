@@ -1,8 +1,13 @@
-add_executable(pikuma main.cpp)
+add_executable(pikuma
+    main.cpp
+    game.cpp
+    appstate.cpp
+)
 
-target_include_directories(pikuma PRIVATE ${SDL3_SOURCE_DIR}/include)
+target_include_directories(pikuma PRIVATE ${CMAKE_CURRENT_LIST_DIR}/include)
 
 # Simple DirectMedia Layer v3
+target_include_directories(pikuma PRIVATE ${SDL3_SOURCE_DIR}/include)
 target_link_libraries(pikuma PRIVATE
     SDL3::SDL3
     SDL3_image::SDL3_image
