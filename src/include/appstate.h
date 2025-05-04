@@ -8,8 +8,8 @@ private:
     SDL_Window *m_window = nullptr;
     SDL_Renderer *m_renderer = nullptr;
     std::unique_ptr<Game> m_game;
-    double m_deltatime = 0.0;
 
+    Uint64 m_lastCounter = 0; // Used for deltatime
 public:
     AppState();
     ~AppState();

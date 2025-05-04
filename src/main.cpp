@@ -24,6 +24,8 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
     AppState *state = new AppState();
     *appstate = state;
 
+    std::srand(std::time(nullptr));
+
     SDL_AppResult ret = state->GetGame()->Initialize();
     if (ret != SDL_APP_CONTINUE) {
         SDL_Log("Failed to initialize game");
@@ -45,6 +47,7 @@ SDL_AppResult SDL_AppIterate(void *appstate)
 {
     AppState *state = static_cast<AppState *>(appstate);
 
+
     SDL_Window *window = state->GetWindow();
     SDL_Renderer *renderer = state->GetRenderer();
 
@@ -59,10 +62,24 @@ SDL_AppResult SDL_AppIterate(void *appstate)
     x = ((w / scale) - SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * SDL_strlen(message)) / 2;
     y = ((h / scale) - SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE) / 2;
 
+    static Uint8 r = 0;
+    static Uint8 g = 172;
+    static Uint8 b = 128;
+
+    double dt = state->GetDeltaTime();
+    static double time = 0;
+    time += dt;
+    while (time >= 1.0) {
+        time -= 1.0;
+        r = (r + std::rand() * 15) % 255;
+        g = (g + std::rand() * 15) % 255;
+        b = (b + std::rand() * 15) % 255;
+    }
+
     /* Draw the message */
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    SDL_SetRenderDrawColor(renderer,r, g, b, 255);
     SDL_RenderDebugText(renderer, x, y, message);
     SDL_RenderPresent(renderer);
 

@@ -1,7 +1,9 @@
 #include <SDL3/SDL.h>
 #include "appstate.h"
 
-AppState::AppState() : m_game(std::unique_ptr<Game>(std::make_unique<Game>())) {}
+AppState::AppState() : m_game(std::unique_ptr<Game>(std::make_unique<Game>())) {
+    m_lastCounter = SDL_GetPerformanceCounter();
+}
 
 AppState::~AppState() {}
 
@@ -35,5 +37,10 @@ Game* AppState::GetGame() const {
 }
 
 double AppState::GetDeltaTime() {
-    return 0.0;
+    Uint64 currentCounter = SDL_GetPerformanceCounter();
+    Uint64 freq = SDL_GetPerformanceFrequency();
+    double dt = static_cast<double>(currentCounter - m_lastCounter) / freq;
+    m_lastCounter = currentCounter;
+
+    return dt;
 }
