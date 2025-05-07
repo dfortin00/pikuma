@@ -18,6 +18,10 @@ SDL_AppResult Game::HandleInput() {
     return SDL_APP_CONTINUE;
 }
 
+SDL_AppResult Game::Render() {
+    return SDL_APP_CONTINUE;
+}
+
 SDL_AppResult Game::Destroy() {
     return SDL_APP_CONTINUE;
 }

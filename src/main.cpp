@@ -47,7 +47,6 @@ SDL_AppResult SDL_AppIterate(void *appstate)
 {
     AppState *state = static_cast<AppState *>(appstate);
 
-
     SDL_Window *window = state->GetWindow();
     SDL_Renderer *renderer = state->GetRenderer();
 
@@ -67,10 +66,10 @@ SDL_AppResult SDL_AppIterate(void *appstate)
     static Uint8 b = 128;
 
     double dt = state->GetDeltaTime();
-    static double time = 0;
-    time += dt;
-    while (time >= 1.0) {
-        time -= 1.0;
+    static double timePassed = 0;
+    timePassed += dt;
+    while (timePassed >= 1.0) {
+        timePassed -= 1.0;
         r = (r + std::rand() * 15) % 255;
         g = (g + std::rand() * 15) % 255;
         b = (b + std::rand() * 15) % 255;
@@ -101,6 +100,9 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event)
 /* This function runs once at shutdown. */
 void SDL_AppQuit(void *appstate, SDL_AppResult result)
 {
-    AppState *state = static_cast<AppState *>(appstate);
-    delete state;
+    if (appstate != nullptr) {
+        AppState *state = static_cast<AppState *>(appstate);
+        delete state;
+        SDL_Log("Deleted appstate...");
+    }
 }

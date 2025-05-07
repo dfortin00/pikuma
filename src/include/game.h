@@ -12,5 +12,6 @@ public:
     SDL_AppResult Initialize();
     SDL_AppResult Update();
     SDL_AppResult HandleInput();
+    SDL_AppResult Render();
     SDL_AppResult Destroy();
 };

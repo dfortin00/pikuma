@@ -5,7 +5,9 @@ AppState::AppState() : m_game(std::unique_ptr<Game>(std::make_unique<Game>())) {
     m_lastCounter = SDL_GetPerformanceCounter();
 }
 
-AppState::~AppState() {}
+AppState::~AppState() {
+    this->Destroy();
+}
 
 SDL_AppResult AppState::CreateWindowAndRenderer(int windowWidth, int windowHeight) {
     /* Create the window */
@@ -22,6 +24,16 @@ SDL_AppResult AppState::CreateWindowAndRenderer(int windowWidth, int windowHeigh
     }
 
     return SDL_APP_CONTINUE;
+}
+
+void AppState::Destroy() {
+    SDL_Log("Destroying appstate....");
+
+    if (m_renderer != nullptr) SDL_DestroyRenderer(m_renderer);
+    if (m_window != nullptr) SDL_DestroyWindow(m_window);
+
+    m_window = nullptr;
+    m_renderer = nullptr;
 }
 
 SDL_Window* AppState::GetWindow() const {

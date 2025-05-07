@@ -16,6 +16,8 @@ public:
 
     SDL_AppResult CreateWindowAndRenderer(int windowWidth, int windowHeight);
 
+    void Destroy();
+
     SDL_Window* GetWindow() const;
     SDL_Renderer* GetRenderer() const;
     Game* GetGame() const;
