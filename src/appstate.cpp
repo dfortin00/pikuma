@@ -23,6 +23,8 @@ SDL_AppResult AppState::CreateWindowAndRenderer(int windowWidth, int windowHeigh
         return SDL_APP_FAILURE;
     }
 
+    SDL_GetWindowSize(m_window, &m_windowWidth, &m_windowHeight);
+
     return SDL_APP_CONTINUE;
 }
 
@@ -55,4 +57,25 @@ double AppState::GetDeltaTime() {
     m_lastCounter = currentCounter;
 
     return dt;
+}
+
+SDL_AppResult AppState::HandleKeyboardInput(SDL_Event * event) {
+    const SDL_KeyboardEvent& keyEvent = event->key;
+
+    if (keyEvent.key == SDLK_RETURN && keyEvent.mod & SDL_KMOD_ALT) {
+        Uint32 flags = SDL_GetWindowFlags(m_window);
+        bool isFullScreen = (flags & SDL_WINDOW_FULLSCREEN) != 0;
+
+        if (isFullScreen) {
+            SDL_SetWindowFullscreen(m_window, 0);
+        } else {
+            SDL_SetWindowFullscreen(m_window, SDL_WINDOW_FULLSCREEN);
+        }
+
+        SDL_GetWindowSize(m_window, &m_windowWidth, &m_windowHeight);
+
+        return SDL_APP_CONTINUE;
+    }
+
+    return m_game->HandleKeyboardInput(event);
 }

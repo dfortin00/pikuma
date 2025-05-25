@@ -90,10 +90,13 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event)
 {
     AppState *state = static_cast<AppState *>(appstate);
 
-    if (event->type == SDL_EVENT_KEY_DOWN ||
-        event->type == SDL_EVENT_QUIT) {
+    switch(event->type) {
+    case SDL_EVENT_KEY_DOWN:
+        return state->HandleKeyboardInput(event);
+    case SDL_EVENT_QUIT:
         return SDL_APP_SUCCESS;  /* end the program, reporting success to the OS. */
-    }
+    };
+
     return SDL_APP_CONTINUE;
 }
 

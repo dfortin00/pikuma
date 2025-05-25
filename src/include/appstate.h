@@ -9,6 +9,9 @@ private:
     SDL_Renderer *m_renderer = nullptr;
     std::unique_ptr<Game> m_game;
 
+    int m_windowWidth = 0;
+    int m_windowHeight = 0;
+
     Uint64 m_lastCounter = 0; // Used for deltatime
 public:
     AppState();
@@ -22,4 +25,6 @@ public:
     SDL_Renderer* GetRenderer() const;
     Game* GetGame() const;
     double GetDeltaTime();
+
+    SDL_AppResult HandleKeyboardInput(SDL_Event *event);
 };

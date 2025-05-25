@@ -11,7 +11,7 @@ public:
 
     SDL_AppResult Initialize();
     SDL_AppResult Update();
-    SDL_AppResult HandleInput();
+    SDL_AppResult HandleKeyboardInput(SDL_Event *event);
     SDL_AppResult Render();
     SDL_AppResult Destroy();
 };

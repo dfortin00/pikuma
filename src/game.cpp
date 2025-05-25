@@ -14,7 +14,10 @@ SDL_AppResult Game::Update() {
     return SDL_APP_CONTINUE;
 }
 
-SDL_AppResult Game::HandleInput() {
+SDL_AppResult Game::HandleKeyboardInput(SDL_Event * event) {
+    if (event->key.key == SDLK_ESCAPE)
+        return SDL_APP_SUCCESS;
+
     return SDL_APP_CONTINUE;
 }
 
